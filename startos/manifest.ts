@@ -7,24 +7,24 @@ const architectures =
   BUILD === 'x86_64' || BUILD === 'aarch64' ? [BUILD] : ['x86_64', 'aarch64']
 
 export const manifest = setupManifest({
-  id: 'hello-world',
-  title: 'Hello World',
+  id: 'wisp',
+  title: 'Wisp',
   license: 'MIT',
-  wrapperRepo: 'https://github.com/Start9Labs/hello-world-startos',
-  upstreamRepo: 'https://github.com/Start9Labs/hello-world',
-  supportSite: 'https://docs.start9.com/',
-  marketingSite: 'https://start9.com/',
-  donationUrl: 'https://donate.start9.com/',
+  wrapperRepo: 'https://github.com/privkeyio/wisp-startos',
+  upstreamRepo: 'https://github.com/privkeyio/wisp',
+  supportSite: 'https://github.com/privkeyio/wisp/issues',
+  marketingSite: 'https://github.com/privkeyio/wisp',
+  donationUrl: null,
   docsUrl:
-    'https://github.com/Start9Labs/hello-world-startos/blob/master/instructions.md',
+    'https://github.com/privkeyio/wisp-startos/blob/master/docs/instructions.md',
   description: {
-    short: 'Bare bones example of a StartOS service',
-    long: 'Hello World is a template service that provides examples of basic StartOS features.',
+    short: 'A lightweight Nostr relay written in Zig',
+    long: 'Wisp is a high-performance Nostr relay written in Zig. It uses LMDB for storage and supports the full Nostr relay protocol including NIP-11 relay information.',
   },
   volumes: ['main'],
   images: {
-    'hello-world': {
-      source: { dockerTag: 'start9/hello-world' },
+    wisp: {
+      source: { dockerTag: 'start9/wisp' },
       arch: architectures,
     } as SDKImageInputSpec,
   },
