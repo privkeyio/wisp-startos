@@ -24,7 +24,7 @@ export const manifest = setupManifest({
   volumes: ['main'],
   images: {
     wisp: {
-      source: { dockerTag: 'start9/wisp' },
+      source: { dockerBuild: { dockerfile: 'Dockerfile' } },
       arch: architectures,
     } as SDKImageInputSpec,
   },
