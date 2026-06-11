@@ -63,9 +63,11 @@ export const configureInfo = sdk.Action.withInput(
   inputSpec,
 
   async ({ effects }) => {
-    const relay = await wispToml.read((c) => c.relay).once()
-    const relay_url = await wispToml.read((c) => c.auth?.relay_url).once()
-    return { ...(relay ?? {}), relay_url: relay_url ?? undefined }
+    const data = await wispToml.read().once()
+    return {
+      ...(data?.relay ?? {}),
+      relay_url: data?.auth?.relay_url ?? undefined,
+    }
   },
 
   async ({ effects, input }) =>

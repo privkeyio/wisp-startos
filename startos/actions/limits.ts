@@ -150,8 +150,17 @@ export const configureLimits = sdk.Action.withInput(
 
   async ({ effects }) => {
     const data = await wispToml.read().once()
+    const limits = data?.limits ?? {}
     return {
-      ...(data?.limits ?? {}),
+      max_connections: limits.max_connections,
+      max_subscriptions: limits.max_subscriptions,
+      max_filters: limits.max_filters,
+      max_message_size: limits.max_message_size,
+      max_content_length: limits.max_content_length,
+      max_event_tags: limits.max_event_tags,
+      query_limit_default: limits.query_limit_default,
+      query_limit_max: limits.query_limit_max,
+      min_pow_difficulty: limits.min_pow_difficulty,
       max_connections_per_ip: data?.security?.max_connections_per_ip,
       events_per_minute: data?.rate_limits?.events_per_minute,
       idle_seconds: data?.timeouts?.idle_seconds,
