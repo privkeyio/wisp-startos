@@ -1,15 +1,18 @@
+import { i18n } from './i18n'
 import { sdk } from './sdk'
-import { wsPort } from './utils'
+import { relayInterfaceId, relayPort } from './utils'
 
 export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
-  const wsMulti = sdk.MultiHost.of(effects, 'ws-multi')
-  const wsMultiOrigin = await wsMulti.bindPort(wsPort, {
-    protocol: 'http',
+  const wsMulti = sdk.MultiHost.of(effects, 'websocket')
+  const wsOrigin = await wsMulti.bindPort(relayPort, {
+    protocol: 'ws',
   })
-  const websocket = sdk.createInterface(effects, {
-    name: 'WebSocket Interface',
-    id: 'websocket',
-    description: 'Nostr WebSocket relay interface',
+  const ws = sdk.createInterface(effects, {
+    name: i18n('Relay Websocket'),
+    id: relayInterfaceId,
+    description: i18n(
+      'Nostr clients connect to your relay through this interface',
+    ),
     type: 'api',
     masked: false,
     schemeOverride: null,
@@ -18,7 +21,7 @@ export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
     query: {},
   })
 
-  const wsReceipt = await wsMultiOrigin.export([websocket])
+  const wsReceipt = await wsOrigin.export([ws])
 
   return [wsReceipt]
 })
