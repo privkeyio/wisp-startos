@@ -23,9 +23,16 @@ RUN case "${TARGETARCH}" in \
     rm zig.tar.xz && \
     ln -s /usr/local/zig-${ZIG_ARCH}-linux-${ZIG_VERSION}/zig /usr/local/bin/zig
 
-# Pinned to the latest upstream release. Bump WISP_VERSION to update (see UPDATING.md).
+# Pinned to the latest upstream release. Bump WISP_VERSION and WISP_COMMIT to
+# update (see UPDATING.md). WISP_COMMIT is the immutable commit the tag points
+# to; the guard below fails the build if the tag is ever re-pointed.
 ARG WISP_VERSION=v0.2.2
-RUN git clone --branch ${WISP_VERSION} --depth 1 https://github.com/privkeyio/wisp.git /src
+ARG WISP_COMMIT=623839d3835b112c8e74e1219ac6b7034c30abfe
+RUN git clone --branch ${WISP_VERSION} --depth 1 https://github.com/privkeyio/wisp.git /src && \
+    HEAD_SHA="$(git -C /src rev-parse HEAD)" && \
+    if [ "${HEAD_SHA}" != "${WISP_COMMIT}" ]; then \
+        echo "wisp ${WISP_VERSION} commit mismatch: expected ${WISP_COMMIT}, got ${HEAD_SHA}" && exit 1; \
+    fi
 
 WORKDIR /src
 # -Dcpu=baseline restricts codegen to the architecture's baseline ISA so the

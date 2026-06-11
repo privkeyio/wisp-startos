@@ -14,7 +14,13 @@ This package builds wisp from source inside the `Dockerfile`, pinned to an upstr
 
 ## Applying the bump
 
-1. **`Dockerfile`** — set `ARG WISP_VERSION` to the new tag (e.g. `v0.3.0`).
+1. **`Dockerfile`** — set `ARG WISP_VERSION` to the new tag (e.g. `v0.3.0`) and `ARG WISP_COMMIT` to the commit that tag points to. Resolve it with:
+
+   ```
+   git ls-remote https://github.com/privkeyio/wisp.git refs/tags/<tag>^{}
+   ```
+
+   Use the dereferenced (`^{}`) commit for annotated tags. The build fails if the clone's HEAD does not match `WISP_COMMIT`.
 2. **`startos/versions/current.ts`** — update `version` (`<upstream>:<packaging>`, e.g. `0.3.0:0`) and `releaseNotes`.
 3. Rebuild with `make` and confirm the relay starts.
 
