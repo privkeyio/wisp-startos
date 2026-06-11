@@ -27,7 +27,7 @@ RUN case "${TARGETARCH}" in \
 # update (see UPDATING.md). WISP_COMMIT is the immutable commit the tag points
 # to; the guard below fails the build if the tag is ever re-pointed.
 ARG WISP_VERSION=v0.2.2
-ARG WISP_COMMIT=623839d3835b112c8e74e1219ac6b7034c30abfe
+ARG WISP_COMMIT=e93e7ea7493bbd62028554661440901771f097f7
 RUN git clone --branch ${WISP_VERSION} --depth 1 https://github.com/privkeyio/wisp.git /src && \
     HEAD_SHA="$(git -C /src rev-parse HEAD)" && \
     if [ "${HEAD_SHA}" != "${WISP_COMMIT}" ]; then \
