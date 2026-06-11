@@ -28,7 +28,10 @@ ARG WISP_VERSION=v0.2.2
 RUN git clone --branch ${WISP_VERSION} --depth 1 https://github.com/privkeyio/wisp.git /src
 
 WORKDIR /src
-RUN zig build -Doptimize=ReleaseFast
+# -Dcpu=baseline restricts codegen to the architecture's baseline ISA so the
+# binary runs on any x86_64/aarch64 CPU. Without it, zig targets the build
+# host's native CPU and the binary crashes with SIGILL on older/different CPUs.
+RUN zig build -Doptimize=ReleaseFast -Dcpu=baseline
 
 FROM docker.io/library/debian:bookworm-slim
 
