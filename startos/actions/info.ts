@@ -1,7 +1,7 @@
 import { wispToml } from '../fileModels/wisp.toml'
 import { sdk } from '../sdk'
 import { i18n } from '../i18n'
-import { pubkeyToHex, relayInterfaceId } from '../utils'
+import { npubOrHexPattern, pubkeyToHex, relayInterfaceId } from '../utils'
 
 const { InputSpec, Value } = sdk
 
@@ -33,7 +33,7 @@ export const inputSpec = InputSpec.of({
     placeholder: 'npub1... or hex pubkey',
     patterns: [
       {
-        regex: '^(npub1[02-9ac-hj-np-z]{6,}|[0-9a-fA-F]{64})$',
+        regex: npubOrHexPattern,
         description: i18n('Must be a valid npub or 64-character hex pubkey.'),
       },
     ],
@@ -44,6 +44,7 @@ export const inputSpec = InputSpec.of({
     required: false,
     default: null,
     placeholder: 'mailto:admin@example.com',
+    maxLength: 256,
   }),
 })
 

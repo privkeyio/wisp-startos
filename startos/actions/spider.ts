@@ -1,7 +1,13 @@
 import { wispToml } from '../fileModels/wisp.toml'
 import { sdk } from '../sdk'
 import { i18n } from '../i18n'
-import { defaultSpiderRelays, pubkeyToHex } from '../utils'
+import {
+  defaultSpiderRelays,
+  joinPubkeys,
+  npubOrHexPattern,
+  pubkeyToHex,
+  splitCsv,
+} from '../utils'
 
 const { InputSpec, Value, List } = sdk
 
@@ -23,7 +29,7 @@ export const inputSpec = InputSpec.of({
     placeholder: 'npub1... or hex pubkey',
     patterns: [
       {
-        regex: '^(npub1[02-9ac-hj-np-z]{6,}|[0-9a-fA-F]{64})$',
+        regex: npubOrHexPattern,
         description: i18n('Must be a valid npub or 64-character hex pubkey.'),
       },
     ],
@@ -40,7 +46,7 @@ export const inputSpec = InputSpec.of({
         placeholder: 'wss://relay.damus.io',
         patterns: [
           {
-            regex: '^wss?://.+',
+            regex: '^wss?://[^,]+$',
             description: i18n('Must be a websocket URL (ws:// or wss://).'),
           },
         ],
@@ -59,7 +65,7 @@ export const inputSpec = InputSpec.of({
         placeholder: 'npub1... or hex pubkey',
         patterns: [
           {
-            regex: '^(npub1[02-9ac-hj-np-z]{6,}|[0-9a-fA-F]{64})$',
+            regex: npubOrHexPattern,
             description: i18n(
               'Must be a valid npub or 64-character hex pubkey.',
             ),
@@ -101,10 +107,8 @@ export const configureSpider = sdk.Action.withInput(
     return {
       enabled: spider?.enabled ?? false,
       admin: spider?.admin || null,
-      relays: spider?.relays
-        ? spider.relays.split(',').filter(Boolean)
-        : defaultSpiderRelays,
-      pubkeys: spider?.pubkeys ? spider.pubkeys.split(',').filter(Boolean) : [],
+      relays: spider?.relays ? splitCsv(spider.relays) : defaultSpiderRelays,
+      pubkeys: splitCsv(spider?.pubkeys),
       sync_interval: spider?.sync_interval ?? 300,
     }
   },
@@ -116,9 +120,7 @@ export const configureSpider = sdk.Action.withInput(
         enabled: input.enabled,
         admin: input.admin ? pubkeyToHex(input.admin) : undefined,
         relays: relays.join(','),
-        pubkeys: input.pubkeys.length
-          ? input.pubkeys.map(pubkeyToHex).join(',')
-          : undefined,
+        pubkeys: joinPubkeys(input.pubkeys),
         sync_interval: input.sync_interval ?? undefined,
       },
     })

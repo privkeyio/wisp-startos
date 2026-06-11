@@ -21,6 +21,21 @@ export const defaultSpiderRelays = [
   'wss://relay.nostr.band',
 ]
 
+// Validation pattern for Action inputs that accept an npub or a 64-char hex
+// pubkey. wisp stores hex; npubs are decoded by pubkeyToHex before writing.
+export const npubOrHexPattern = '^(npub1[02-9ac-hj-np-z]{6,}|[0-9a-fA-F]{64})$'
+
+// Read a comma-joined config string back into a list, dropping empties.
+export function splitCsv(s: string | undefined): string[] {
+  return s ? s.split(',').filter(Boolean) : []
+}
+
+// Decode a list of npub/hex pubkeys to hex and join for storage, or undefined
+// when the list is empty.
+export function joinPubkeys(list: string[]): string | undefined {
+  return list.length ? list.map(pubkeyToHex).join(',') : undefined
+}
+
 // Accept either a 64-char hex pubkey or an npub, returning lowercase hex.
 // wisp's config only understands hex, so npubs entered in Actions are decoded
 // here before being written to wisp.toml.

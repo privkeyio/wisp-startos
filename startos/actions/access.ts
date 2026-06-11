@@ -1,7 +1,7 @@
 import { wispToml } from '../fileModels/wisp.toml'
 import { sdk } from '../sdk'
 import { i18n } from '../i18n'
-import { pubkeyToHex } from '../utils'
+import { joinPubkeys, npubOrHexPattern, splitCsv } from '../utils'
 
 const { InputSpec, Value, List } = sdk
 
@@ -32,7 +32,7 @@ export const inputSpec = InputSpec.of({
         placeholder: 'npub1... or hex pubkey',
         patterns: [
           {
-            regex: '^(npub1[02-9ac-hj-np-z]{6,}|[0-9a-fA-F]{64})$',
+            regex: npubOrHexPattern,
             description: i18n(
               'Must be a valid npub or 64-character hex pubkey.',
             ),
@@ -49,7 +49,15 @@ export const inputSpec = InputSpec.of({
           'If set, only these IP address prefixes may connect. All others are rejected.',
         ),
       },
-      { placeholder: '192.168.1' },
+      {
+        placeholder: '192.168.1',
+        patterns: [
+          {
+            regex: '^[^,\\s]+$',
+            description: i18n('Must not contain commas or spaces.'),
+          },
+        ],
+      },
     ),
   ),
   ip_blacklist: Value.list(
@@ -58,7 +66,15 @@ export const inputSpec = InputSpec.of({
         name: i18n('IP Blocklist'),
         description: i18n('IP address prefixes that are always rejected.'),
       },
-      { placeholder: '10.0.0' },
+      {
+        placeholder: '10.0.0',
+        patterns: [
+          {
+            regex: '^[^,\\s]+$',
+            description: i18n('Must not contain commas or spaces.'),
+          },
+        ],
+      },
     ),
   ),
 })
@@ -84,15 +100,9 @@ export const configureAccess = sdk.Action.withInput(
     return {
       auth_required: data?.auth?.required ?? false,
       auth_to_write: data?.auth?.to_write ?? false,
-      admin_pubkeys: data?.management?.admin_pubkeys
-        ? data.management.admin_pubkeys.split(',').filter(Boolean)
-        : [],
-      ip_whitelist: data?.security?.ip_whitelist
-        ? data.security.ip_whitelist.split(',').filter(Boolean)
-        : [],
-      ip_blacklist: data?.security?.ip_blacklist
-        ? data.security.ip_blacklist.split(',').filter(Boolean)
-        : [],
+      admin_pubkeys: splitCsv(data?.management?.admin_pubkeys),
+      ip_whitelist: splitCsv(data?.security?.ip_whitelist),
+      ip_blacklist: splitCsv(data?.security?.ip_blacklist),
     }
   },
 
@@ -103,13 +113,15 @@ export const configureAccess = sdk.Action.withInput(
         to_write: input.auth_to_write,
       },
       security: {
-        ip_whitelist: input.ip_whitelist.join(','),
-        ip_blacklist: input.ip_blacklist.join(','),
+        ip_whitelist: input.ip_whitelist.length
+          ? input.ip_whitelist.join(',')
+          : undefined,
+        ip_blacklist: input.ip_blacklist.length
+          ? input.ip_blacklist.join(',')
+          : undefined,
       },
       management: {
-        admin_pubkeys: input.admin_pubkeys.length
-          ? input.admin_pubkeys.map(pubkeyToHex).join(',')
-          : undefined,
+        admin_pubkeys: joinPubkeys(input.admin_pubkeys),
       },
     }),
 )
