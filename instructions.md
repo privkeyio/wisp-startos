@@ -2,6 +2,7 @@
 
 ## Documentation
 
+- [Wisp documentation](https://docs.privkey.io/wisp/): full project documentation.
 - [Wisp README](https://github.com/privkeyio/wisp/blob/master/README.md): upstream overview and operator notes.
 - [wisp.toml reference](https://github.com/privkeyio/wisp/blob/master/wisp.toml.example): the full upstream configuration file, with every setting documented inline.
 
