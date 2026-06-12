@@ -1,10 +1,10 @@
 import { IMPOSSIBLE, VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.2.2:0',
+  version: '0.4.0:0',
   releaseNotes: {
     en_US:
-      'Initial release of Wisp for StartOS 0.4.0. Packages the wisp Nostr relay (v0.2.2) with configuration through Actions: relay information, Spider sync, limits, and access control.',
+      'Updates wisp to v0.4.0: an epoll worker-pool I/O model that keeps memory flat under connection churn (replacing the thread-per-connection model), built on Zig 0.16.',
   },
   migrations: {
     up: async ({ effects }) => {},
