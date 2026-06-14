@@ -4,7 +4,7 @@
 
 # Wisp on StartOS
 
-> **Upstream docs:** <https://github.com/privkeyio/wisp/blob/master/README.md>
+> **Upstream docs:** <https://github.com/privkeyio/wisp/blob/main/README.md>
 >
 > Everything not listed in this document should behave the same as upstream
 > Wisp. If a feature, setting, or behavior is not mentioned here, the upstream
@@ -66,6 +66,8 @@ path = "/data/wisp"
 ```
 
 Everything else (relay info, spider, limits, access control) is set through the Actions below. **Changes take effect the next time the relay starts.**
+
+The package does not set `[storage] sync`, so wisp uses its default `meta` durability: data is flushed on every commit and a crash or power loss can at worst roll back the last transaction, never corrupt the database. This is the right default for an always-on home server.
 
 ---
 
@@ -136,7 +138,7 @@ None.
 
 ## What Is Unchanged from Upstream
 
-- Full Nostr relay protocol support (NIPs 1, 2, 9, 11, 13, 16, 22, 33, 40, 42, 45, 50, 65, 70, 77, 86)
+- Full Nostr relay protocol support (NIPs 1, 2, 9, 11, 13, 16, 33, 40, 42, 45, 50, 65, 70, 77, 86)
 - LMDB storage backend
 - Spider mode for syncing events from external relays
 - Rate limiting and event validation

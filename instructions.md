@@ -3,12 +3,12 @@
 ## Documentation
 
 - [Wisp documentation](https://docs.privkey.io/wisp/): full project documentation.
-- [Wisp README](https://github.com/privkeyio/wisp/blob/master/README.md): upstream overview and operator notes.
-- [wisp.toml reference](https://github.com/privkeyio/wisp/blob/master/wisp.toml.example): the full upstream configuration file, with every setting documented inline.
+- [Wisp README](https://github.com/privkeyio/wisp/blob/main/README.md): upstream overview and operator notes.
+- [wisp.toml reference](https://github.com/privkeyio/wisp/blob/main/wisp.toml.example): the full upstream configuration file, with every setting documented inline.
 
 ## What you get on StartOS
 
-- A **Wisp** Nostr relay backed by an LMDB database, with no external database to manage.
+- A **Wisp** Nostr relay backed by an LMDB database, with no external database to manage. Storage is crash-safe by default: a power loss can at most lose the last write, never corrupt your relay.
 - A **Relay Websocket** interface exposing the relay at port 7777 over Tor and LAN.
 - Configuration entirely through StartOS Actions; there is no separate config UI, and you do not edit `wisp.toml` by hand.
 
