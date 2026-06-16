@@ -1,8 +1,10 @@
 import { sdk } from '../sdk'
 import { wispToml } from '../fileModels/wisp.toml'
 
-// Seed wisp.toml on every init so new schema defaults (fixed host/port/storage)
-// are written on install and applied on upgrade.
+// Seed wisp.toml on every init to ensure trust_proxy is configured on install
+// and reapplied on upgrade. The merge below only sets security.trust_proxy;
+// the host/port/storage defaults come from the schema's .catch() fallbacks in
+// fileModels/wisp.toml.ts, applied when the file is read and validated.
 //
 // trust_proxy must be true: every client reaches Wisp through the StartOS
 // reverse proxy, which collapses all of them to the proxy's single source IP.
