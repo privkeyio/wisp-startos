@@ -38,7 +38,7 @@ WORKDIR /src
 # -Dcpu=baseline restricts codegen to the architecture's baseline ISA so the
 # binary runs on any x86_64/aarch64 CPU. Without it, zig targets the build
 # host's native CPU and the binary crashes with SIGILL on older/different CPUs.
-RUN zig build -Doptimize=ReleaseFast -Dcpu=baseline
+RUN zig build -Doptimize=ReleaseSafe -Dcpu=baseline
 
 FROM docker.io/library/debian:bookworm-slim
 
