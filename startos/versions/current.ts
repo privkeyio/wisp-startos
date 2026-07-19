@@ -1,10 +1,10 @@
 import { IMPOSSIBLE, VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.5.13:0',
+  version: '0.5.13:1',
   releaseNotes: {
     en_US:
-      'Updates wisp to v0.5.13. Advertises NIP-51 (lists) support and adds relay support for Marmot MLS KeyPackage events. Reduces lock contention under load by sharding the rate limiters and reusing broadcast buffers, improving throughput on busy relays. Carries forward every prior fix.',
+      'Test build: wisp built from upstream main HEAD (7c07362) past the v0.5.13 tag — adds a query scan cap that bounds how many entries a query may scan, preventing full-database page-fault thrash.',
   },
   migrations: {
     up: async ({ effects }) => {},
