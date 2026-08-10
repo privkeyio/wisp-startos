@@ -1,10 +1,10 @@
 import { IMPOSSIBLE, VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.5.14:2',
+  version: '0.5.15:0',
   releaseNotes: {
     en_US:
-      'Updates wisp to v0.5.14. Queries are now bounded in how many stored entries they may scan, so a selective filter matching fewer events than its limit no longer walks the entire database. This fixes severe CPU and major page-fault load on large databases. The new query_scan_multiplier setting (default 20, 0 to disable) controls the bound. The health check now performs an HTTP request so an unresponsive relay is reported as down. Carries forward every prior fix.',
+      'Updates wisp to v0.5.15. Fixes a WebSocket connection-slot leak in the HTTP layer that could exhaust a worker and wedge the relay\'s accept loop under sustained load, so the relay stops accepting new connections while the process stays up. Fixes a related WebSocket union crash under heavy single-worker churn. Adds a self-healing watchdog that restarts the relay if it ever stops accepting connections. Carries forward every prior fix.',
   },
   migrations: {
     up: async ({ effects }) => {},
