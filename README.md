@@ -117,7 +117,7 @@ Require NIP-42 authentication (to connect and/or to publish), restrict connectio
 
 | Check | Method | Display | Message |
 |-------|--------|---------|---------|
-| Relay | Port listening (7777) | "Relay" | "The relay is ready and accepting connections" / "The relay is not responding" |
+| Relay | HTTP GET on `http://127.0.0.1:7777/` (5s timeout) | "Relay" | "The relay is ready and accepting connections" / "The relay is not responding" |
 
 ---
 
