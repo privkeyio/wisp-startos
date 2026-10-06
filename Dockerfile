@@ -11,10 +11,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 ARG TARGETARCH
-ARG ZIG_VERSION=0.16.0
+ARG ZIG_VERSION=0.17.0
 RUN case "${TARGETARCH}" in \
-        amd64) ZIG_ARCH="x86_64"; ZIG_SHA="70e49664a74374b48b51e6f3fdfbf437f6395d42509050588bd49abe52ba3d00" ;; \
-        arm64) ZIG_ARCH="aarch64"; ZIG_SHA="ea4b09bfb22ec6f6c6ceac57ab63efb6b46e17ab08d21f69f3a48b38e1534f17" ;; \
+        amd64) ZIG_ARCH="x86_64"; ZIG_SHA="1cbe9df9f27e6b78d14ccbca43b6703a404ef79ef1c463de901d7f088d4e2026" ;; \
+        arm64) ZIG_ARCH="aarch64"; ZIG_SHA="9e8d11661d4ae3bd57702a3832781e23ad151dde5798e16a5ccd503f65234ff8" ;; \
         *) echo "Unsupported architecture: ${TARGETARCH}" && exit 1 ;; \
     esac && \
     curl -fsSL -o zig.tar.xz "https://ziglang.org/download/${ZIG_VERSION}/zig-${ZIG_ARCH}-linux-${ZIG_VERSION}.tar.xz" && \
@@ -26,8 +26,8 @@ RUN case "${TARGETARCH}" in \
 # Pinned to the latest upstream release. Bump WISP_VERSION and WISP_COMMIT to
 # update (see UPDATING.md). WISP_COMMIT is the immutable commit the tag points
 # to; the guard below fails the build if the tag is ever re-pointed.
-ARG WISP_VERSION=v0.7.0
-ARG WISP_COMMIT=f5f3dbbec55392b45c380782d1cb0c74e371f873
+ARG WISP_VERSION=v0.8.0
+ARG WISP_COMMIT=687faf8e5c9e7a113433fead1497dac2b4735c9a
 RUN git clone --branch ${WISP_VERSION} --depth 1 https://github.com/privkeyio/wisp.git /src && \
     HEAD_SHA="$(git -C /src rev-parse HEAD)" && \
     if [ "${HEAD_SHA}" != "${WISP_COMMIT}" ]; then \
