@@ -26,8 +26,8 @@ RUN case "${TARGETARCH}" in \
 # Pinned to the latest upstream release. Bump WISP_VERSION and WISP_COMMIT to
 # update (see UPDATING.md). WISP_COMMIT is the immutable commit the tag points
 # to; the guard below fails the build if the tag is ever re-pointed.
-ARG WISP_VERSION=v0.6.0
-ARG WISP_COMMIT=6f47ec4e04bacf75ffe02fb6462cfbe41222b0d3
+ARG WISP_VERSION=v0.7.0
+ARG WISP_COMMIT=f5f3dbbec55392b45c380782d1cb0c74e371f873
 RUN git clone --branch ${WISP_VERSION} --depth 1 https://github.com/privkeyio/wisp.git /src && \
     HEAD_SHA="$(git -C /src rev-parse HEAD)" && \
     if [ "${HEAD_SHA}" != "${WISP_COMMIT}" ]; then \
